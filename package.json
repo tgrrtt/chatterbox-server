@@ -5,7 +5,9 @@
   "author": "Hack Reactor",
   "license": "Copyright 2013, Hack Reactor. All rights reserved.",
   "scripts": {
-    "test": "mocha server/spec"
+    "test": "mocha server/spec -R spec",
+    "watch": "mocha server/spec -w -R spec",
+    "watch-bail": "mocha server/spec -w -b -R spec"
   },
   "devDependencies": {
     "mocha": "^1.21.4",
