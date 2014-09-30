@@ -25,6 +25,13 @@ exports.handler = function(request, response) {
     response.end();
   }
 
+  if (request.method === 'PUT'){
+    console.log('now you need to write a PUT handler')
+  }
+
+  if (request.method === 'DELETE'){
+    console.log('now you need to write a DELETE handler')
+  }
 
   if (request.method === "GET" && parsedUrl.path.slice(0,9) === '/classes/') {
 
