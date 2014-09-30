@@ -42,12 +42,12 @@ var app = {
 
     app.clearMessages();
 
-    for (var i = 0; i < data.results.length; i++) {
-      if (data.results[i].username === targetUsername) {
-        app.addMessage(data.results[i]);
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].username === targetUsername) {
+        app.addMessage(data[i]);
       } else if (targetUsername === null) {
-        app.addMessage(data.results[i]);
-        app.addRoom(data.results[i].roomname);
+        app.addMessage(data[i]);
+        app.addRoom(data[i].roomname);
       }
     }
   },
@@ -73,7 +73,6 @@ var app = {
   addMessage: function(message) {
     var username;
     var text;
-
 
     if (message.username === undefined || message.text === undefined) {
       username = "undefined";

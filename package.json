@@ -13,5 +13,9 @@
     "mocha": "^1.21.4",
     "request": "^2.34.0",
     "chai": "^1.9.0"
+  },
+  "dependencies": {
+    "firebase": "^1.0.24",
+    "socket.io": "^1.1.0"
   }
 }

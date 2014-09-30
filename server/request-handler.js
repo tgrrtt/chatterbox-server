@@ -1,9 +1,9 @@
 //import node's module "url"
 var url = require("url");
+var Firebase = require("firebase");
+var io = require('socket.io');
 
-var messageData = {
-  results: []
-};
+var myRootRef = new Firebase('https://blinding-torch-85.firebaseio.com/messageData');
 
 
 // handle requests
@@ -52,8 +52,18 @@ exports.handler = function(request, response) {
 
     response.writeHead(statusCode, headers);
 
-    var result = JSON.stringify(messageData);
-    response.end(result);
+    myRootRef.once("value", function(snapshot) {
+      var resultsObj = snapshot.val();
+      var results = [];
+
+      for (var k in resultsObj) {
+        results.push(resultsObj[k]);
+      }
+      var result = JSON.stringify(results);
+      response.end(result);
+
+    });
+
 
   } else if (request.method === "POST"){
     statusCode = 201;
@@ -66,7 +76,7 @@ exports.handler = function(request, response) {
     request.on('end', function() {
 
       var parseDat = JSON.parse(dat);
-      messageData.results.push(parseDat);
+      myRootRef.push(parseDat);
 
       var headers = defaultCorsHeaders;
       headers["Content-Type"] =  "application/json";
