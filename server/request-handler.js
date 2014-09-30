@@ -1,15 +1,12 @@
-/* You should implement your request handler function in this file.
- * And hey! This is already getting passed to http.createServer()
- * in basic-server.js. But it won't work as is.
- * You'll have to figure out a way to export this function from
- * this file and include it in basic-server.js so that it actually works.
- * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
+//import node's module "url"
 var url = require("url");
 
 var messageData = {
   results: []
 };
 
+
+// handle requests
 exports.handler = function(request, response) {
 
   var statusCode;
@@ -19,11 +16,20 @@ exports.handler = function(request, response) {
 
   statusCode = 200;
 
+    //////////////////////////
+   //handle OPTIONS request//
+  //////////////////////////
+
   if (request.method === 'OPTIONS'){
     var headers = defaultCorsHeaders;
     response.writeHead(statusCode, headers);
     response.end();
   }
+
+    //////////////////////////////////////
+   //prompt for PUT and DELETE requests//
+  //////////////////////////////////////
+
 
   if (request.method === 'PUT'){
     console.log('now you need to write a PUT handler')
@@ -32,6 +38,10 @@ exports.handler = function(request, response) {
   if (request.method === 'DELETE'){
     console.log('now you need to write a DELETE handler')
   }
+
+    ///////////////////////////////
+   //handle GET and Post request//
+  ///////////////////////////////
 
   if (request.method === "GET" && parsedUrl.path.slice(0,9) === '/classes/') {
 
@@ -63,6 +73,11 @@ exports.handler = function(request, response) {
       response.writeHead(statusCode, headers);
       response.end(JSON.stringify({}));
     });
+
+    //////////////////////////
+   //return 404 for bad req//
+  //////////////////////////
+
   } else {
     statusCode = 404;
     response.writeHead(statusCode);
@@ -70,11 +85,8 @@ exports.handler = function(request, response) {
   }
 };
 
-/* These headers will allow Cross-Origin Resource Sharing (CORS).
- * This CRUCIAL code allows this server to talk to websites that
- * are on different domains. (Your chat client is running from a url
- * like file://your/chat/client/index.html, which is considered a
- * different domain.) */
+// default Cross Origin Resource Sharing Headers.
+
 defaultCorsHeaders = {
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",

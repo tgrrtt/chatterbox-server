@@ -1,7 +1,8 @@
 
 var app = {
 
-  server: 'https://api.parse.com/1/classes/chatterbox?order=-createdAt',
+  // server: 'https://api.parse.com/1/classes/chatterbox?order=-createdAt',
+  server: 'http://127.0.0.1:8080/classes/messages',
 
   friends: [],
 
@@ -26,7 +27,7 @@ var app = {
       url: this.server,
       type: 'POST',
       data: JSON.stringify(message),
-      contentType: 'application/json',
+      contentType: "application/json",
       success: function (data) {
         console.log('chatterbox: Message sent');
       },
@@ -86,7 +87,7 @@ var app = {
       text = "<b>" + text + "</b>";
     }
     var $toSend = '<div class="chat"><a class="username">' + username + '</a>: ' + text + app.messageOptions + '</div>';
-    $('#chats').append($toSend);
+    $('#chats').prepend($toSend);
   },
 
   clearMessages: function() {
@@ -117,12 +118,6 @@ var app = {
     };
     this.send(msg);
   },
-
-
-  // addFriend: function() {
-
-  //   //NO FRIENDS :(
-  // }
 
 };
 
