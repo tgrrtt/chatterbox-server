@@ -7,7 +7,7 @@
   "scripts": {
     "test": "mocha server/spec -R spec",
     "watch": "mocha server/spec -w -R spec",
-    "watch-bail": "mocha server/spec -w -b -R spec"
+    "bail": "mocha server/spec --bail -R spec"
   },
   "devDependencies": {
     "mocha": "^1.21.4",
