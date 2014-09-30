@@ -7,8 +7,8 @@
 var url = require("url");
 
 var messageData = {
-    results: []
-  };
+  results: []
+};
 
 exports.handler = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
@@ -23,9 +23,10 @@ exports.handler = function(request, response) {
   //console.log("Serving request type " + request.method + " for url " + request.url);
 
   statusCode = 200;
-  if (request.method === "GET") {
+
+  if (request.method === "GET" && parsedUrl.path.slice(0,9) === '/classes/') {
+
     statusCode = 200;
-    console.log("GETTING", messageData);
     var headers = defaultCorsHeaders;
 
     headers["Content-Type"] =  "application/json";
@@ -35,9 +36,7 @@ exports.handler = function(request, response) {
     var result = JSON.stringify(messageData);
     response.end(result);
 
-  }
-
-  if (request.method === "POST"){
+  } else if (request.method === "POST"){
     statusCode = 201;
 
     var dat = "";
@@ -56,10 +55,11 @@ exports.handler = function(request, response) {
       //console.log(messageData.results);
       response.end();
     });
-
+  } else {
+    statusCode = 404;
+    response.writeHead(statusCode);
+    response.end();
   }
-
-
 };
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).
