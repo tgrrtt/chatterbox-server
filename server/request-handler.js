@@ -11,18 +11,20 @@ var messageData = {
 };
 
 exports.handler = function(request, response) {
-  /* the 'request' argument comes from nodes http module. It includes info about the
-  request - such as what URL the browser is requesting. */
-
-  /* Documentation for both request and response can be found at
-   * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
 
   var statusCode;
   var parsedUrl =  url.parse(request.url);
 
-  //console.log("Serving request type " + request.method + " for url " + request.url);
+  console.log("Serving request type " + request.method + " for url " + request.url);
 
   statusCode = 200;
+
+  if (request.method === 'OPTIONS'){
+    var headers = defaultCorsHeaders;
+    response.writeHead(statusCode, headers);
+    response.end();
+  }
+
 
   if (request.method === "GET" && parsedUrl.path.slice(0,9) === '/classes/') {
 
@@ -52,8 +54,7 @@ exports.handler = function(request, response) {
       var headers = defaultCorsHeaders;
       headers["Content-Type"] =  "application/json";
       response.writeHead(statusCode, headers);
-      //console.log(messageData.results);
-      response.end();
+      response.end(JSON.stringify({}));
     });
   } else {
     statusCode = 404;
