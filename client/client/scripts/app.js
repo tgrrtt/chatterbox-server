@@ -2,7 +2,7 @@
 var app = {
 
   // server: 'https://api.parse.com/1/classes/chatterbox?order=-createdAt',
-  server: 'http://127.0.0.1:8080/classes/messages',
+  server: 'http://127.0.0.1:3000/classes/messages',
 
   friends: [],
 
@@ -23,11 +23,9 @@ var app = {
 
   send: function(message) {
     $.ajax({
-
       url: this.server,
       type: 'POST',
       data: JSON.stringify(message),
-      contentType: "application/json",
       success: function (data) {
         console.log('chatterbox: Message sent');
       },

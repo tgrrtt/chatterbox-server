@@ -1,19 +1,49 @@
-/* Import node's http module: */
-var http = require("http");
-var fileHandler = require("./file-server-handler.js");
-var apiHandler = require("./request-handler.js");
+var express = require('express');
+var Firebase = require('firebase');
+var path = require("path");
+var app = express();
 
-var port = 3000;
+var myRootRef = new Firebase('https://blinding-torch-85.firebaseio.com/messageData');
 
-var ip = "127.0.0.1";
+////// SERVE STATIC FILES
 
-// create a file server on one port
-var fileServer = http.createServer(fileHandler.handler);
-console.log("Listening on http://" + ip + ":" + port);
-fileServer.listen(port, ip);
+var newPath = path.join(__dirname, '../client/');
+app.use(express.static(newPath));
 
+/// POST
 
-//create an apiServer on another port
-var apiServer = http.createServer(apiHandler.handler);
-console.log("Listening on http://" + ip + ":8080");
-apiServer.listen(8080, ip);
+app.post('/classes/messages', function(req, res) {
+
+  var dat = '';
+  req.on('data', function(chunk) {
+    dat += chunk;
+  });
+
+  req.on('end', function() {
+    dat = JSON.parse(dat);
+    myRootRef.push(dat);
+    res.end();
+  });
+});
+
+/// GET
+
+app.get('/classes/messages', function(req, res) {
+  // serve messages here
+
+  myRootRef.once("value", function(snapshot) {
+
+    var resultsObj = snapshot.val();
+    var results = [];
+
+    for (var k in resultsObj) {
+      results.push(resultsObj[k]);
+    }
+    var result = JSON.stringify(results);
+    res.end(result);
+
+  });
+
+});
+
+app.listen(3000);
